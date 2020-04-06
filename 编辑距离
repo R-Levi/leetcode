@@ -1,0 +1,47 @@
+**
+ * 最小编辑距离
+ * 输入：word1 = "horse", word2 = "ros"
+ * 输出：3
+ * 解释：
+ * horse -> rorse (将 'h' 替换为 'r')
+ * rorse -> rose (删除 'r')
+ * rose -> ros (删除 'e')
+ */
+public class minDistance {
+    /**
+     * 不管是某个单词插入删除修改一个字符，假设从hrose到ro的编辑距离分别为a，b，c，
+     * 那么hrose到ros的编辑距离不会超过a+1，b+1，c+1；那么从hrose到ros，最小编辑距离就应该是min（a+1，b+1，c+1）
+     * 即dp的思想,使用D[i][j]来表示word1的前i个字符和word2的前j个字符的编辑距离，dp方程如下：
+     * D[i][j]=min(D[i][j-1]+1，D[i-1][j]+1，D[i-1][j-1])，第i个和第j个字符相同的话
+     * D[i][j]=min(D[i][j-1]+1，D[i-1][j]+1，D[i-1][j-1]+1)，第i个和第j个字符不相同的话
+     * @param word1
+     * @param word2
+     * @return mindistance
+     */
+    public int minDistance(String word1, String word2) {
+        //某一个为空的情况
+        if(word1==null||word2==null){
+            return Math.min(word1.length(),word2.length());
+        }
+        int m = word1.length();
+        int n = word2.length();
+        int dp[][] = new int[m+1][n+1];
+        //边界初始化dp
+        for (int i = 0; i < m+1; i++) {
+            dp[i][0] = i;
+        }
+        for (int i = 0; i < n+1; i++) {
+            dp[0][i] = i;
+        }
+        for (int i = 1; i < m+1; i++) {
+            for (int j = 1; j < n+1; j++) {
+                if (word1.charAt(i-1)==word2.charAt(j-1)) {
+                    dp[i][j] = Math.min(dp[i][j-1]+1,Math.min(dp[i-1][j]+1,dp[i-1][j-1]));
+                }else {
+                    dp[i][j] = Math.min(dp[i][j-1]+1,Math.min(dp[i-1][j]+1,dp[i-1][j-1]+1));
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
