@@ -1,0 +1,23 @@
+//经典的dp问题
+/**一对兔子，从出生后第5个月起每个月都生一对兔子。小兔子长到第5个月后每个月又生一对兔子。
+假如兔子都不死，请问第1个月出生的一对兔子，第n个月有多少只兔子？
+*/
+public class rabbit {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int x=scanner.nextInt();
+        int fn = fn(x);
+        System.out.println(fn);
+    }
+    public static int fn(int n){
+        if (n<=4&&n>0)
+            return 1;
+        if (n==5){
+            return 2;
+        }
+        if (n>5){
+            return fn(n-1)+fn(n-4);
+        }
+        return 0;
+    }
+}
