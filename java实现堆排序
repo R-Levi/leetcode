@@ -1,0 +1,46 @@
+public class HeapSort {
+    public static void main(String[] args) {
+        int[] arr = {19,17,20,18,16,21,15,48,56,23,12};
+        int[] headsort = headsort(arr);
+        for (int i = headsort.length-1; i >= 0; i--) {
+            System.out.print(headsort[i]+" ");
+        }
+    }
+    public static void creatHeap(int[] arr){
+        for (int i = arr.length/2-1; i>= 0 ; i--) {
+            fix_dowm(arr,i);
+        }
+    }
+    public static void fix_dowm(int[] arr,int i){
+        int max = i;
+        int left=i*2+1,right=i*2+2;
+        int temp = arr[i];
+        if (left< arr.length && arr[left] > arr[max])
+            max = left;
+        if (right< arr.length && arr[right] > arr[max])
+            max = right;
+        if (max!=i){
+            arr[i]=arr[max];
+            arr[max]=temp;
+            fix_dowm(arr,max);
+        }
+    }
+    public static int[] headsort(int[] arr){
+        int len = arr.length;
+        int[] res = new int[len];
+        int temp ;
+        if (arr.length<1)
+            return arr;
+        creatHeap(arr);
+        while (len>0){
+            temp = arr[len-1];
+            res[len-1] = arr[0];
+            arr[len-1] =0;
+            arr[0] = temp;
+            fix_dowm(arr,0);
+            len--;
+        }
+        res[0] = arr[0];
+        return res;
+    }
+}
