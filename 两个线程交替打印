@@ -1,0 +1,144 @@
+**
+ * 两个线程，一个打印ABC，一个打印123，交替
+ */
+public class Print {
+    static char[] chars1="abcdef".toCharArray();
+    static char[] chars2="123456".toCharArray();
+    /*private static Lock lock = new ReentrantLock();
+    private static Condition condition= lock.newCondition();//线程队列
+    public static void main(String[] args) {
+        new Thread(()->{
+            try {
+                lock.lock();
+                for (Character c: chars1) {
+                    System.out.println(c);
+                    condition.signal();
+                    condition.await();
+                }
+                condition.signal();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        }).start();
+
+        new Thread(()->{
+            try {
+                lock.lock();
+                for (Character c: chars2) {
+                    System.out.println(c);
+                    condition.signal();
+                    condition.await();
+                }
+                condition.signal();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        }).start();
+    }*/
+    /*static Thread t1 = null;
+    static Thread t2 = null;
+    public static void main(String[] args) {
+        t1 = new Thread(()->{
+            for (char c :chars1) {
+                System.out.println(c);
+                LockSupport.unpark(t2);//叫醒t2
+                LockSupport.park(t1);//t1阻塞
+            }
+            t1.interrupt();
+        });
+        t2 = new Thread(()->{
+            for (char c :chars2) {
+                System.out.println(c);
+                LockSupport.unpark(t1);//叫醒t1
+                LockSupport.park(t2);//t2阻塞
+            }
+            t2.interrupt();
+        });
+        t1.start();
+        t2.start();
+    }*/
+   /* enum run {t1,t2};
+    static volatile run r = run.t1;
+    public static void main(String[] args) {
+        new Thread(()->{
+            for (char c : chars1) {
+                while (r!=run.t1){}//自旋
+                System.out.print(c);
+                r = run.t2;
+            }
+        }).start();
+        new Thread(()->{
+            for (char c : chars2) {
+                while (r!=run.t2){}//自旋
+                System.out.print(c);
+                r = run.t1;
+            }
+        }).start();
+    }*/
+   /* public static void main(String[] args) {
+        CountDownLatch latch = new CountDownLatch(1);
+        Object o =new Object();
+        new Thread(()->{
+            try {
+                latch.await();//先阻塞，等待数字先输出
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            synchronized (o){
+                for (char c:chars1){
+                    System.out.print(c);
+                    try {
+                        o.notify();
+                        o.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                o.notify();
+            }
+        }).start();
+        new Thread(()->{
+            latch.countDown();
+            synchronized (o){
+                for (char c:chars2){
+                    System.out.print(c);
+                    try {
+                        o.notify();
+                        o.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                o.notify();
+            }
+        }).start();
+    }*/
+
+    public static void main(String[] args) {
+        TransferQueue<Character> queue = new LinkedTransferQueue<>();
+        new Thread(()->{
+            try {
+                for (char c: chars1) {
+                    System.out.println(queue.take());//取出打印123线程放进去的字母
+                    queue.transfer(c);//把字母放进队列
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        new Thread(()->{
+            try {
+                for (char c: chars2) {
+                    queue.transfer(c);//把数字放进队列
+                    System.out.println(queue.take());//取出打印abc线程放进去的字母
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+}
