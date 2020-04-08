@@ -1,0 +1,38 @@
+ /**
+   机器人运动范围,BFS的思想，队列实现。从0，0 开始，先入队，
+   进入迭代后，将队列中的节点信息弹出，如果满足条件，则可到达数加1
+   然后将它的右边和下边的元素加进去，不满足条件的话，直接continue
+   迭代的终止条件为队列的数据为空
+   节点要满足的条件：不能超出数组边界，行和列的数位之和不能超过k值
+*/
+class Solution {
+        public int movingCount(int m, int n, int k) {
+        if (k==0)
+            return 1;
+        int res=0;
+        boolean[][] visited = new boolean[m][n];
+        //队列存储的是访问的元素的索引和行和列的数和
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{0,0,0,0});
+        while (!queue.isEmpty()){
+            int[] x = queue.poll();
+            //获取数据
+            int i=x[0],j=x[1],ni=x[2],nj=x[3];
+            //判断条件
+            if (i < 0 || i >= m || j < 0 || j >= n || k < ni + nj || visited[i][j])
+                continue;
+            visited[i][j]=true;
+            res++;
+            queue.add(new int[]{i+1,j,getnum(i+1),getnum(j)});
+            queue.add(new int[]{i,j+1,getnum(i),getnum(j+1)});
+        }
+        return res;
+    }
+    public int getnum(int x){
+        int res = 0;
+        for (;x>0;x/=10){
+            res+=x%10;
+        }
+        return res;
+    }
+}
