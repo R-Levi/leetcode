@@ -1,0 +1,25 @@
+深度优先遍历，回溯法，
+public static List<String> generateParenthesis(int n) {
+        List<String> list = new ArrayList<String>(2*n);
+        if (n==0){
+            return list;
+        }
+        generate(list,n,n,"");
+        return list;
+    }
+
+    private static void generate(List<String> list, int left, int right, String s) {
+        if (left==0&&right==0){
+            list.add(s.toString());
+            return;
+        }
+        if (left>right){
+            return;
+        }
+        if (left>0){
+            generate(list,left-1,right,s+"(");
+        }
+        if (right>0){
+            generate(list,left,right-1,s+")");
+        }
+    }
