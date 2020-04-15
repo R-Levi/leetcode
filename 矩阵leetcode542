@@ -1,0 +1,35 @@
+/**广度优先*/
+public int[][] updateMatrix(int[][] matrix) {
+        int dx[] = {-1,1,0,0};
+        int dy[] = {0,0,1,-1};//四个方向
+        //0的索引入队
+        Queue<int[]> queue = new LinkedList<>();
+        int m = matrix.length,n = matrix[0].length;//行列
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j]==0){
+                    queue.offer(new int[]{i,j});
+                    //offer和add两者都是往队列尾部插入元素，不同的时候，
+                    // 当超出队列界限的时候，add（）方法是抛出异常让你处理，而offer（）方法是直接返回false
+                }else {
+                    matrix[i][j]=-1;//将不为0的元素值为-1，表示为访问过
+                }
+            }
+        }
+        while (!queue.isEmpty()){
+            int[] cur = queue.poll();//当前元素
+            int x=cur[0],y=cur[1];//记录坐标
+            for (int i = 0; i < 4; i++) {//延四个方向遍历
+                int newx = x+dx[i],newy = y+dy[i];
+                if (newx>=0&&newx<m&&newy>=0&&newy<n&&matrix[newx][newy]==-1){
+                    matrix[newx][newy] = matrix[x][y]+1;//为访问过的话在当前的数值下加1
+                    queue.offer(new int[]{newx,newy});
+                }
+            }
+        }
+        return matrix;
+    }
+    
+   
+   
+   
