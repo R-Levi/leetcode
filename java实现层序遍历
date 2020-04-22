@@ -21,6 +21,36 @@ public class cengxubianli {
         }
         return list;
     }
+    //广度优先的思想找出树的最右边的节点
+    public List<Integer> rightSideView(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if (root==null)
+            return res;
+        queue.add(root);
+        int h = 0;//层级
+        while (!queue.isEmpty()){
+            list.add(new ArrayList<Integer>());
+            int len = queue.size();
+            for (int i = 0; i < len; i++) {
+                TreeNode node = queue.remove();
+                list.get(h).add(node.val);
+                if (node.left!=null)
+                    queue.add(node.left);
+                if (node.right!=null)
+                    queue.add(node.right);
+            }
+            h++;
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            int l = list.get(i).size();
+            Integer integer = list.get(i).get(l - 1);//获取每层最右边的元素
+            res.add(integer);
+        }
+        return res;
+    }
 }
 class TreeNode {
       int val;
