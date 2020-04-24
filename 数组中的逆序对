@@ -1,0 +1,50 @@
+/**在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。*/
+
+//利用归并排序思想
+public int reversePairs(int[] nums) {
+        return merge(nums,0,nums.length-1);
+    }
+
+    private int merge(int[] nums, int left, int right) {
+        if (left>=right) return 0;
+        int mid = (left+right)/2;
+        //计算逆序数
+        int count = merge(nums,left,mid)+merge(nums,mid+1,right);
+        int i = left,j=mid+1,k=0;
+        int[] temp = new int[right-left+1];
+        while (i<=mid&&j<=right){
+            count+= nums[i]<=nums[j]? j-(mid+1):0;
+            temp[k++] = nums[i]<=nums[j]? nums[i++]:nums[j++];
+        }
+        while (i<=mid){
+            count+= j-(mid+1);
+            temp[k++] = nums[i++];
+        }
+        while (j<=right){
+            temp[k++] = nums[j++];
+        }
+        System.arraycopy(temp,0,nums,left,right-left+1);
+        return count;
+    }
+
+
+    //归并排序
+   /* public void merge(int nums[],int start,int end){
+        if (start<=end) return;
+        int mid = (start+end)/2;
+        merge(nums,start,mid);
+        merge(nums,mid+1,end);
+
+        int[] temp = new int[end-start+1];
+        int i = start,j = mid+1,k=0;
+        while (i<=mid&&j<=end){
+            temp[k++] = nums[i]<nums[j]? nums[i++]:nums[j++];
+        }
+        while (i<=mid){
+            temp[k++] = nums[i++];
+        }
+        while (j<=end){
+            temp[k++] = nums[j++];
+        }
+        System.arraycopy(temp,0,nums,start,end);
+    }*/
