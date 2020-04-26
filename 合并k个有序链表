@@ -45,7 +45,8 @@ public ListNode mergeKLists1(ListNode[] lists) {
         ListNode head = new ListNode(0);
         ListNode p = head;
         for (ListNode node: lists) {
-            queue.add(node);
+           if (node!=null)
+                queue.add(node);
         }
         while (!queue.isEmpty()){
             p.next = queue.poll();
