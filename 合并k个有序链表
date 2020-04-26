@@ -54,6 +54,6 @@ public ListNode mergeKLists1(ListNode[] lists) {
             if (p.next!=null)
                 queue.add(p.next);
         }
-        return head;
+        return head.next;
     }
 
