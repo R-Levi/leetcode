@@ -1,0 +1,20 @@
+//dp,初始化*2 *3 *5 的个数，每次去*2 *3 *5 的最小的值，取到谁，谁+1
+//时间复杂度：\mathcal{O}(1)O(1) 时间检索答案和大约 1690 \times 5 = 84501690×5=8450 次的预计算操作。空间复杂度：常数空间用保存 1690 个丑数。
+public int nthUglyNumber(int n){
+        ugly u = new ugly();
+        return u.nums[n-1];
+    }
+    class ugly{
+        public int[] nums = new int[1690];
+        public ugly() {
+            nums[0]=1;
+            int ugly,i2=0,i3=0,i5=0;
+            for (int i = 0; i < 1690; i++) {
+                ugly = Math.min(nums[i2]*i2,Math.min(nums[i3]*i3,nums[i5]*i5));
+                nums[i] = ugly;
+                if (ugly==nums[i2]*2)   i2++;
+                if (ugly==nums[i3]*3)   i3++;
+                if (ugly==nums[i5]*5)   i5++;
+            }
+        }
+    }
