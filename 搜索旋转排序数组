@@ -1,0 +1,30 @@
+o(logn)的时间复杂度，二分，
+
+
+public int search(int[] nums, int target) {
+        int len = nums.length;
+        if(len==0||nums==null)
+            return -1;
+        int left = 0,right = len-1;
+        int mid;
+        while(left<=right){
+            mid = left+(right-left)/2;
+            if(nums[mid] == target)
+                return mid;
+//<=是只剩下两个元素的时候，mid和left指向同一个值
+            if(nums[left]<=nums[mid]){
+                if(target>=nums[left]&&target<nums[mid]){
+                    right = mid-1;
+                }else{
+                    left = mid+1;
+                }
+            }else{
+                if(target<=nums[right]&&target>nums[mid]){
+                    left = mid+1;
+                }else{
+                    right = mid-1;
+                }
+            }
+        }
+        return -1;
+    }
