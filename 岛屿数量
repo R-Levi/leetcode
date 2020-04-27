@@ -1,0 +1,33 @@
+ 对每一位进行深度优先遍历，遍历过的置0，说明已遍历
+ public int numIslands(char[][] grid) {
+        if(grid==null||grid.length==0){
+            return 0;
+        }
+        //行列的长度
+        int r = grid.length;
+        int c = grid[0].length;
+        int num_Islands =  0;
+        for(int i = 0; i<r;++i){
+            for(int j = 0;j<c;++j){
+                if(grid[i][j]=='1'){
+                    ++num_Islands;
+                    dfs(grid,i,j);
+                }
+            }
+        }
+        return num_Islands;
+    }
+    public void dfs(char[][] grid,int r,int c){
+        int nr = grid.length;
+        int nc = grid[0].length;
+        //判断越界和’0‘
+        if(r<0||c<0||r>=nr||c>=nc||grid[r][c]=='0'){
+            return;
+        }
+        //遍历过的置为0
+        grid[r][c] = '0';
+        dfs(grid,r-1,c);
+        dfs(grid,r+1,c);
+        dfs(grid,r,c-1);
+        dfs(grid,r,c+1);
+    }
