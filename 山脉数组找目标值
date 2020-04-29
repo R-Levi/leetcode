@@ -1,0 +1,63 @@
+/**
+ * // This is MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface MountainArray {
+ *     public int get(int index) {}
+ *     public int length() {}
+ * }
+ */
+ 
+class Solution {
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        int l = mountainArr.length();
+        int n = find(0,l-1,mountainArr);
+        int left = binary_search_left(mountainArr,target,0,n);
+        if(left!=-1){
+            return left;
+        }
+        int right = binary_search_right(mountainArr,target,n+1,l-1);
+        if(right!=-1){
+            return right;
+        }
+        return -1;
+    }
+    int find(int left,int right,MountainArray mountainArr){
+        while(left<right){
+            int mid = left+(right-left)/2;
+            if(mountainArr.get(mid)<mountainArr.get(mid+1)){
+                left = mid+1;
+            }else{
+                right = mid;
+            }
+        }
+        return left;
+    }
+    //二分左
+    int binary_search_left(MountainArray mountainArr,int target,int left,int right){
+        while(left<=right){
+            int mid = left+(right-left)/2;
+            if(target == mountainArr.get(mid)){
+                return mid;
+            }else if(target<mountainArr.get(mid)){
+                right = mid - 1;
+            }else{
+                left = mid +1;
+            }
+        }
+        return -1;
+    }
+    //右
+    int binary_search_right(MountainArray mountainArr,int target,int left,int right){
+        while(left<=right){
+            int mid = left+(right-left)/2;
+            if(target == mountainArr.get(mid)){
+                return mid;
+            }else if(target>mountainArr.get(mid)){
+                right = mid - 1;
+            }else{
+                left = mid +1;
+            }
+        }
+        return -1;
+    }
+}
