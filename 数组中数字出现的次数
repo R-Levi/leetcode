@@ -1,0 +1,22 @@
+//对所有数字异或得到的是两个不同数字的异或值，将两个不同的数分到不同的组中，然后分别异或
+//如何分组? 任取一位二进制中为1的div，1表示两个在那一位不相同，对每个数和div进行与运算就能将两个数分开
+
+public int[] singleNumbers(int[] nums) {
+        int ret = 0;
+        for(int i =0;i<nums.length;i++){
+            ret = ret^nums[i];
+        }
+        int div = 1;
+        while((ret&div)==0){
+            div=div<< 1;//左移
+        }
+        int a=0,b=0;
+        for(int n:nums){
+            if((div&n)==0){
+                a = a^n;
+            }else{
+                b = b^n;
+            }
+        }
+        return new int[]{a,b};
+    }
