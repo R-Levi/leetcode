@@ -1,0 +1,21 @@
+//双指针滑动窗口
+class Solution {
+   public int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+        int n = s.length();
+        int p = 0,res = 0;
+        for (int i = 0; i < n; i++) {
+            //从i开始，将i前面的删除掉
+            if (i!=0){
+                set.remove(s.charAt(i-1));
+            }
+            while (p<n&&!set.contains(s.charAt(p))){
+                set.add(s.charAt(p));
+                ++p;
+            }
+            //因为p走到了不相同字串的下一个字符，所以是p-i
+            res = Math.max(res,p-i);
+        }
+        return res;
+    }
+}
