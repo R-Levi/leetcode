@@ -1,0 +1,37 @@
+//反着跳；
+public int jump(int[] nums) {
+        int index = nums.length-1;
+        int steps = 0;
+        while(index>0){
+            for(int i=0; i<=index;i++){
+                if(i+nums[i]>=index){
+                    steps++;
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return steps;
+    }
+ //正着跳
+public int jump(int[] nums) {
+        if(nums.length<2||nums==null){
+            return 0;
+        }
+        int index = 0;//记录跳的位置
+        int res = 0;
+        while(index+nums[index]<nums.length-1){
+            res++;
+            int max=0;
+            int next=0;
+            for(int j = index+1;j<nums.length&&j<=index+nums[index];++j){
+                if(j+nums[j]>max){
+                    max = j+nums[j];
+                    next = j;
+                }
+            }
+            index = next;
+        }
+        //index+nums[index]=num.length-1跳出循环，res加上最后跳的一步
+        return ++res;
+    }
