@@ -1,0 +1,22 @@
+class Solution {
+    // 定义 pre 作为每一个环节比较的最小值。
+    Integer pre = null;
+    public boolean isValidBST(TreeNode root) {
+        // 如果根节点为空，直接返回 true 。
+        if (root == null) {
+            return true;
+        }
+        // 递归优先访问左子树。
+        if (!isValidBST(root.left)) {
+            return false;
+        }
+        // 访问当前节点，有效二叉搜索树当前节点的值应该大于所有左子树的值。
+        if (pre != null && root.val <= pre) {
+            return false;
+        }
+        //前边都符合条件了，将pre赋值为当前节点的值
+        pre = root.val;
+        // 最后访问右子树。
+        return isValidBST(root.right);
+    }
+}
