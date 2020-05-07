@@ -13,6 +13,7 @@ public int reversePairs(int[] nums) {
         int i = left,j=mid+1,k=0;
         int[] temp = new int[right-left+1];
         while (i<=mid&&j<=right){
+        //排序的时候计算逆序对，j-（mid+1）是nums【i】<=nums【j】的时候j的前面的肯定比i小
             count+= nums[i]<=nums[j]? j-(mid+1):0;
             temp[k++] = nums[i]<=nums[j]? nums[i++]:nums[j++];
         }
