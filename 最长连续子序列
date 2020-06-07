@@ -1,0 +1,21 @@
+public int longestConsecutive(int[] nums) {
+//将数字记录在set中
+        Set<Integer> set = new HashSet<>();
+        for(int num:nums){
+            set.add(num);
+        }
+        int len = 0;
+        for(int num:set){
+        //如果当前数字num，num-1在set中，就没必要以他为起点在查了
+            if(!set.contains(num-1)){
+                int curNum = num;
+                int curLen = 1;
+                while(set.contains(curNum+1)){
+                    curNum++;
+                    curLen++;
+                }
+                len = Math.max(len,curLen);
+            }
+        }
+        return len;
+    }
